@@ -1,22 +1,21 @@
 // genpwd.js
+// Main entry to genpwd
 
 const R = require('ramda');
-const gen = require('./generators');
+
+const gen = [];
+gen[1] = require('./generator_1');
+gen[2] = require('./generator_2');
+gen[3] = require('./generator_3');
+gen[4] = require('./generator_4');
 
 // Application metadata
 const Info = {
   name: "GenPwd",
   author: "AndrewJ",
-  version: "2.30",
-  date: "2018-03-21",
+  version: "3.0.0",
+  date: "2018-09-22",
   info: "GenPwd is a simple password generator.",
-  appendTo: function (tagName) {
-    let str = "<div>";
-    str += "<span class='title'>" + this.name + "</span>";
-    str += "&nbsp;<span class='description'>v" + this.version + "</span>";
-    str += "</div>";
-    $(tagName).append(str);
-  },
   aboutText: function () {
     let str = this.name + " v" + this.version;
     str += ", last modified: " + this.date;
@@ -27,14 +26,11 @@ const Info = {
 };
 
 // Main function to generate a list of random words, based on the chosen generator.
-const generate = (nwords = 10) => {
-  const g = gen.generator4;
-  let output = [];
-
-  return R.map(g.randomWord, R.range(0, nwords));
-
+const generate = (gen, nwords = 10) => {
+  return R.map(gen.randomWord, R.range(0, nwords));
 };
 
+exports.generators = gen;
 exports.generate = generate;
 
 // The End
