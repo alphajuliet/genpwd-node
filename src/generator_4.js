@@ -47,9 +47,9 @@ let nextLetter = (tr_matrix, symbols, ltr) => {
   const row_index = R.indexOf(ltr, symbols);
   const row = tr_matrix[row_index];
 
-  // Round the probabilities to splits across 100
-  const roundf = R.flip(R.curry(Math.round));
-  const int_row = R.map(R.compose(roundf(1), R.multiply(200)), row);
+  // Round the probabilities to splits across 200
+  const roundToInt = (n) => Math.round(n, 1);
+  const int_row = R.map(R.compose(roundToInt, R.multiply(200)), row);
 
   // Generate a bag of letters and pick one
   const listf = G.WeightedList(R.zipObj(symbols, int_row));
@@ -83,7 +83,7 @@ var randomWord = (opts) => {
         letter = nextLetter(tr, allLetters, letter);
         w = w + letter;
       } while (letter != ' ' && w.length < maxLength);
-      w = $.trim(w);
+      w = R.trim(w);
     } while (w.length < minLength);
     return w;
   }

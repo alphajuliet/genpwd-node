@@ -3,11 +3,12 @@
 
 const R = require('ramda');
 
+// Add generators
 const gen = [];
-gen[1] = require('./generator_1');
-gen[2] = require('./generator_2');
-gen[3] = require('./generator_3');
-gen[4] = require('./generator_4');
+gen.push(require('./generator_1'));
+gen.push(require('./generator_2'));
+gen.push(require('./generator_3'));
+gen.push(require('./generator_4'));
 
 // Application metadata
 const Info = {
@@ -25,12 +26,14 @@ const Info = {
   }
 };
 
-// Main function to generate a list of random words, based on the chosen generator.
-const generate = (gen, nwords = 10) => {
-  return R.map(gen.randomWord, R.range(0, nwords));
+// Generate a list of random words from the chosen generator.
+const generate = (genId = 0, nwords = 10, options = {}) => {
+  return R.map(() => gen[genId].randomWord(options), 
+               R.range(0, nwords));
 };
 
-exports.generators = gen;
+exports.info = Info;
+exports.numberOfGenerators = gen.length;
 exports.generate = generate;
 
 // The End
